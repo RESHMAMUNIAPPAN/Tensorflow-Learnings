@@ -1,0 +1,8 @@
+[
+  { "text": "Invoice number 123. Amount: 5000", "label": "invoice" },
+  { "text": "GST invoice with payment due date", "label": "invoice" },
+  { "text": "Experience in Python, Java, and software development", "label": "resume" },
+  { "text": "Looking for job opportunity, resume of Jane Doe", "label": "resume" },
+  { "text": "Aadhar card, government identity number and DOB", "label": "id_card" },
+  { "text": "National photo ID card with address and signature", "label": "id_card" }
+]
