@@ -73,7 +73,7 @@ To connect and browse your MongoDB database collections hosted on **MongoDB Atla
 
 ### 🗃️ Step 2: Create or Use Existing Database
 
-   Go to: Clusters → Collections
+   Go to: Clusters → Collections → Create Database → Database Name → Collection Name
    
  If the database (e.g., taskdb) already exists:
   ✔️ You can directly view collections like 'tasks'
