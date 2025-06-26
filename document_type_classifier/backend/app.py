@@ -2,26 +2,39 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
+import pickle
 import os
+import traceback
+from pymongo import MongoClient
+from datetime import datetime
+import certifi  # ✅ For trusted SSL certificate
 
-# Initialize Flask app
 app = Flask(__name__)
+CORS(app)
 
-# Enable CORS for all domains (or restrict to React's origin if preferred)
-CORS(app)  # You can use: CORS(app, origins=["http://localhost:3000"])
+# Load the model
+model = tf.keras.models.load_model('model/classifier_model.h5')
 
-# Load the trained model (make sure model is in the same folder or adjust path)
-model = tf.keras.models.load_model('model.h5')
+# Load the tokenizer
+with open("model/tokenizer.pkl", "rb") as f:
+    tokenizer = pickle.load(f)
 
-# Define a dictionary for class labels (customize as per your trained classes)
+# Class labels
 class_labels = {
     0: "invoice",
     1: "resume",
     2: "id_card"
-    # Add more if needed
 }
 
-# Prediction endpoint
+# ✅ Secure MongoDB connection using certifi
+client = MongoClient(
+    "mongodb+srv://pmreshma2004:pyLT7XTOY6j4o74o@tensorflow-project.5uiajhn.mongodb.net/?retryWrites=true&w=majority&appName=TensorFlow-Project",
+    tls=True,
+    tlsCAFile=certifi.where()
+)
+db = client["document_classifier"]
+collection = db["predictions"]
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -31,29 +44,33 @@ def predict():
             return jsonify({'error': 'No input text provided'}), 400
 
         input_text = data['text']
-
-        # Basic preprocessing (adjust according to your model’s preprocessing logic)
-        # Example: tokenize and pad
-        # You must use the same tokenizer/vocabulary as during training
-        # This is a placeholder — update with your real tokenizer
-        from tensorflow.keras.preprocessing.text import Tokenizer
-        from tensorflow.keras.preprocessing.sequence import pad_sequences
-
-        tokenizer = Tokenizer(num_words=10000, oov_token='<OOV>')
-        tokenizer.fit_on_texts([input_text])  # Ideally, load saved tokenizer
         seq = tokenizer.texts_to_sequences([input_text])
-        padded = pad_sequences(seq, maxlen=100)
+        padded = tf.keras.preprocessing.sequence.pad_sequences(seq, maxlen=20)
 
         prediction = model.predict(padded)
-        predicted_class = np.argmax(prediction, axis=1)[0]
+        predicted_class_index = int(np.argmax(prediction))
+        confidence_score = float(np.max(prediction)) * 100
+
+        label = class_labels.get(predicted_class_index, "Unknown")
+
+        # Insert into MongoDB
+        result_doc = {
+            "text": input_text,
+            "predicted_label": label,
+            "confidence": round(confidence_score, 2),
+            "timestamp": datetime.utcnow()
+        }
+        collection.insert_one(result_doc)
 
         return jsonify({
-            'prediction': class_labels.get(predicted_class, "Unknown")
+            "prediction": label,
+            "confidence": f"{confidence_score:.2f}%"
         })
 
     except Exception as e:
+        print("⚠️ Error during prediction:")
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
-# Run the app
 if __name__ == '__main__':
     app.run(debug=True)
