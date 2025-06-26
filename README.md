@@ -1,11 +1,9 @@
 ## 🚀 How to Run TensorFlow Document Classifier Project
 
----
-
 ### 🧠 Backend Setup (Flask + TensorFlow)
 
 📂 Path:  
-`D:\MACHINELEARNING\TensorFlowFinal\tensorflow-project\document_type_classifier\backend`
+D:\MACHINELEARNING\TensorFlowFinal\tensorflow-project\document_type_classifier\backend
 
 
 # Run backend server
@@ -25,7 +23,7 @@ npm start
 
 To connect your FastAPI backend to MongoDB Atlas, follow these steps:
 
----
+
 
 ### 📋 Step 0: Get the Connection URI
 
@@ -40,8 +38,6 @@ To connect your FastAPI backend to MongoDB Atlas, follow these steps:
 
 mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
 
----
-
 ### ✏️ Step 1: Modify the Connection String
 
 Replace the following in the copied URI:
@@ -54,8 +50,6 @@ Replace the following in the copied URI:
 
 mongodb+srv://yourUser:yourPassword@cluster0.xxxxx.mongodb.net/taskdb?retryWrites=true&w=majority
 
----
-
 ### 📁 Step 2: Add to `.env` File in Backend
 
 Create or update a `.env` file inside the backend folder:
@@ -65,14 +59,9 @@ MONGO_URI=mongodb+srv://yourUser:yourPassword@cluster0.xxxxx.mongodb.net/taskdb?
 
 > ⚠️ Make sure `.env` is listed in `.gitignore` to keep credentials private.
 
----
----
-
 ## 🌐 MongoDB Atlas Access Instructions
 
 To connect and browse your MongoDB database collections hosted on **MongoDB Atlas**, follow the steps below:
-
----
 
 ### 🛡️ Step 1: Configure Network Access (Allow Your IP)
 
