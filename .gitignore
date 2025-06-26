@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.env
+.env
+*.log
+
+# Node/React
+node_modules/
+build/
+dist/
+*.lock
+
+# System
+.DS_Store
+Thumbs.db
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# OS generated files
+*.swp
