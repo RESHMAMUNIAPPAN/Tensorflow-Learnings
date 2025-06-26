@@ -10,7 +10,9 @@
 
 # Run backend server
 python app.py
-🌐 Frontend Setup (React)
+
+### 🌐 Frontend Setup (React)
+
 📂 Path:
 D:\MACHINELEARNING\TensorFlowFinal\tensorflow-project\document_type_classifier\frontend
 
